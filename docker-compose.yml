@@ -1,0 +1,61 @@
+services:
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+      - ./:/var/www
+      - ./docker/nginx/conf.d/ssl:/etc/nginx/ssl
+    ports:
+      - 8080:443
+    command: /bin/bash -c "exec nginx -g 'daemon off;'"
+    depends_on:
+      - app
+    container_name: crm-nginx
+
+  app:
+    build: 
+      context: .
+      dockerfile: docker/app/Dockerfile
+    volumes:
+      - ./:/var/www
+    depends_on:
+      - db
+    container_name: crm-app
+
+  db:
+    image: mariadb:lts
+    restart: always
+    volumes:
+      - ./tmp/db:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: crm
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - 8101:3306
+    container_name: crm-db
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8000:8080
+    container_name: crm-adminer
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    restart: always
+    ports:
+      - 8086:80
+    environment:
+      - PMA_ARBITRARY=1
+    container_name: crm-myadmin
+
+  node:
+    image: node:20.18-bookworm
+    volumes:
+        - ./:/var/www
+    working_dir: /var/www
+    tty: true
+    ports:
+      - 5173:5173
+    container_name: crm-node
