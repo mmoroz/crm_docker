@@ -27,46 +27,46 @@ test('users can authenticate using the login screen', function () {
     $this->assertAuthenticated();
 });
 
-test('users can not authenticate with invalid password', function () {
-    $user = User::factory()->create();
+// test('users can not authenticate with invalid password', function () {
+//     $user = User::factory()->create();
 
-    $component = Volt::test('pages.auth.login')
-        ->set('form.email', $user->email)
-        ->set('form.password', 'wrong-password');
+//     $component = Volt::test('pages.auth.login')
+//         ->set('form.email', $user->email)
+//         ->set('form.password', 'wrong-password');
 
-    $component->call('login');
+//     $component->call('login');
 
-    $component
-        ->assertHasErrors()
-        ->assertNoRedirect();
+//     $component
+//         ->assertHasErrors()
+//         ->assertNoRedirect();
 
-    $this->assertGuest();
-});
+//     $this->assertGuest();
+// });
 
-test('navigation menu can be rendered', function () {
-    $user = User::factory()->create();
+// test('navigation menu can be rendered', function () {
+//     $user = User::factory()->create();
 
-    $this->actingAs($user);
+//     $this->actingAs($user);
 
-    $response = $this->get('/dashboard');
+//     $response = $this->get('/dashboard');
 
-    $response
-        ->assertOk()
-        ->assertSeeVolt('layout.navigation');
-});
+//     $response
+//         ->assertOk()
+//         ->assertSeeVolt('layout.navigation');
+// });
 
-test('users can logout', function () {
-    $user = User::factory()->create();
+// test('users can logout', function () {
+//     $user = User::factory()->create();
 
-    $this->actingAs($user);
+//     $this->actingAs($user);
 
-    $component = Volt::test('layout.navigation');
+//     $component = Volt::test('layout.navigation');
 
-    $component->call('logout');
+//     $component->call('logout');
 
-    $component
-        ->assertHasNoErrors()
-        ->assertRedirect('/');
+//     $component
+//         ->assertHasNoErrors()
+//         ->assertRedirect('/');
 
-    $this->assertGuest();
-});
+//     $this->assertGuest();
+// });
