@@ -14,5 +14,4 @@ all-tests:
 	docker exec -it crm-app php artisan test
 
 perm:
-	sudo chgrp -R www-data storage
-	sudo chmod -R ug+rwx storage
+	sudo chmod -R 777 storage
